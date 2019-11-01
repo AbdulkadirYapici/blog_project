@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<section>
+    {%  if blog is defined %}
+    {% for blogdata in blog %}
+        <div class='homePageDiv'>
+            <a href="{{ url('single_entry_show', {id: blogdata.id}) }} "> <img  class="mySlides" src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}"  style="width:100%;height:500px;"></a>
+
+        </div>
+    {% endfor %}
+    {% endif %}
+    <section class="w3-container w3-center" style="max-width:100%" >
+        <h2 class="w3-wide">Blog Contents</h2>
+        <p class="w3-opacity"><i>Gitmek istediğiniz blog yazısı için resme tıklayınız</i></p>
+    </section>
+</section>
+
+        <div class = "homePageDiv" >
+            {%  if blog is defined %}
+                {% for blogdata in blog %}
+                    <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"> {{ blogdata.id }}-{{ blogdata.summary }}  <a href="{{ url('single_entry_show', {id: blogdata.id}) }} ">Yazıya git</a> <hr>
+
+                {% endfor %}
+
+            {% endif %}
+
+
+        </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script src= "{{asset('js/homePage_slide.js')}}"></script>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/homePage.css') }}" rel="stylesheet">
+{% endblock %}

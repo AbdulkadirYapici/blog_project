@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog İcerikleri{% endblock %}
+{% block body %}
+    <div class = "showContentDiv" >
+        <br>
+        {%  if blog is defined %}
+            {% for blogdata in blog %}
+                    <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;">
+                {{ blogdata.id }}-{{ blogdata.content }} <hr>
+            {% endfor %}
+
+        {% endif %}
+
+
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link href="{{ asset('css/showBlog.css') }}" rel="stylesheet">
+{% endblock %}

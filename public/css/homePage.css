@@ -1,0 +1,9 @@
+div.homePageDiv{
+    width: 50%;
+    height: 20%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    background-color:lightblue;
+}

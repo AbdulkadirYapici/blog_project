@@ -31,7 +31,7 @@ class Blog
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $preview_img;
+    public $preview_img;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
