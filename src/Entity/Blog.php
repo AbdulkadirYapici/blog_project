@@ -58,10 +58,7 @@ class Blog
      */
     private $status;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="blog_id")
-     */
-    private $user_id;
+
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="blog_id")
@@ -73,12 +70,18 @@ class Blog
      */
     private $tag_id;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="blog_id")
+     */
+    private $user_id;
+
+
 
     public function __construct()
     {
-        $this->user_id = new ArrayCollection();
         $this->category_id = new ArrayCollection();
         $this->tag_id = new ArrayCollection();
+        $this->user_id = new ArrayCollection();
     }
 
 
@@ -184,31 +187,10 @@ class Blog
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getUserId(): Collection
-    {
-        return $this->user_id;
-    }
 
-    public function addUserId(User $userId): self
-    {
-        if (!$this->user_id->contains($userId)) {
-            $this->user_id[] = $userId;
-        }
 
-        return $this;
-    }
 
-    public function removeUserId(User $userId): self
-    {
-        if ($this->user_id->contains($userId)) {
-            $this->user_id->removeElement($userId);
-        }
 
-        return $this;
-    }
 
     /**
      * @return Collection|Category[]
@@ -261,6 +243,35 @@ class Blog
 
         return $this;
     }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUserId(): Collection
+    {
+        return $this->user_id;
+    }
+
+    public function addUserId(User $userId): self
+    {
+        if (!$this->user_id->contains($userId)) {
+            $this->user_id[] = $userId;
+            $userId->addBlogId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserId(User $userId): self
+    {
+        if ($this->user_id->contains($userId)) {
+            $this->user_id->removeElement($userId);
+            $userId->removeBlogId($this);
+        }
+
+        return $this;
+    }
+
 
 
 
