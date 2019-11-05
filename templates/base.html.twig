@@ -13,10 +13,13 @@
     <nav class="w3-bar w3-black">
         <a href="/" class="w3-button w3-bar-item">Home</a>
         <a href="/blogcontent" class="w3-button w3-bar-item">Show Blog Contents</a>
-        <a href="#tour" class="w3-button w3-bar-item">Tour</a>
-        <a href="#contact" class="w3-button w3-bar-item">Contact</a>
+        <a href="/register" class="w3-button w3-bar-item">Sing Up</a>
+        <a href="/login" class="w3-button w3-bar-item">Sign In</a>
         <a href="/logout" class="w3-button w3-bar-item">Sign Out</a>
-
+        <form action="/result" method="GET">
+            <input id="search" name="search" type="text" placeholder="Type here">
+            <input id="submit" type="submit" value="Search">
+        </form>
     </nav>
 
         {% block body %}{% endblock %}
