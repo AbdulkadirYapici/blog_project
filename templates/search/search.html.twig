@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search Results{% endblock %}
+
+
+{% block body %}
+    {%  if error is defined %}
+        {{ error }}
+    {% endif %}
+
+    {%  if blogs is defined %}
+        {% for blogdata in blogs %}
+
+            <h1  align="center" > {{ blogdata.title }} </h1>
+            <p align="center"><img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"></p>
+            {{ blogdata.id }}-{{ blogdata.content }} <hr>
+        {% endfor %}
+
+
+    {% endif %}
+
+    {%  if category is defined %}
+        {% for categorydata in category %}
+            <h1  align="center" > {{ categorydata.title }} </h1>
+            <p align="center"><img src="{{ asset('uploads/afisler/' ~ categorydata.preview_img) }}" style="width:200px;height:121px;"></p>
+            {{ categorydata.id }}-{{ categorydata.content }} <hr>
+        {% endfor %}
+
+    {% endif %}
+
+{% endblock %}

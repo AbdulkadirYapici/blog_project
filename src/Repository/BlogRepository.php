@@ -18,7 +18,13 @@ class BlogRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Blog::class);
     }
-
+    public function findByContentContains(string $term){
+        $qb = $this -> createQueryBuilder('b')
+            ->andWhere('b.content LIKE :searchTerm')
+            ->setParameter('searchTerm', '%'.$term.'%')
+            ->getQuery();
+        return $qb->execute();
+    }
     // /**
     //  * @return Blog[] Returns an array of Blog objects
     //  */
