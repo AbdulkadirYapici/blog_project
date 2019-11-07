@@ -77,4 +77,12 @@ class Tag
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString() : string
+    {
+        return sprintf('%s ', $this->blog_id);
+    }
 }

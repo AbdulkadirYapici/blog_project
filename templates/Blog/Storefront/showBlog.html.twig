@@ -6,12 +6,12 @@
         <br>
         {%  if blog is defined %}
             {% for blogdata in blog %}
+                    <h1>{{  blogdata.title }}</h1> <br>
                     <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;">
-                {{ blogdata.id }}-{{ blogdata.content }} <hr>
+                <br>{{ blogdata.id }}-{{ blogdata.content }} <hr>
             {% endfor %}
 
         {% endif %}
-
 
     </div>
 

@@ -58,6 +58,16 @@ class Category
         return $this->blog_id;
     }
 
+    /**
+     * @param ArrayCollection $blog_id
+     */
+    public function setBlogId(ArrayCollection $blog_id): void
+    {
+        $this->blog_id = $blog_id;
+    }
+
+
+
     public function addBlogId(Blog $blogId): self
     {
         if (!$this->blog_id->contains($blogId)) {
@@ -76,5 +86,9 @@ class Category
         }
 
         return $this;
+    }
+    public function __toString()
+    {
+        return sprintf("%s %s %s",$this->id , $this->name, $this->blog_id);
     }
 }

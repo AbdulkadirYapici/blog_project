@@ -273,6 +273,10 @@ class Blog
     }
 
 
+    public function __toString()
+    {
+        return sprintf('%d', $this->id);
+    }
 
 
 }

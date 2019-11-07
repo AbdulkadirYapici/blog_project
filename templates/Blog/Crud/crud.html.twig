@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog İcerikleri{% endblock %}
+{% block body %}
+    <div class = "showContentDiv" >
+        <br>
+        <a href="{{ url('create_blog_page') }} "> <button type="button">Create New Blog</button> </a><hr>
+
+        {%  if blog is defined %}
+            {% for blogdata in blog %}
+                <h1>{{  blogdata.title }}</h1> <br>
+                <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;">
+                <br>{{ blogdata.id }}-{{ blogdata.content }} <br>
+                <a href="{{ url('delete_page', {id: blogdata.id}) }} "> <button type="button">Delete This Blog</button> </a><hr>
+            {% endfor %}
+
+
+        {% endif %}
+
+
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/showBlog.css') }}" rel="stylesheet">
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Results{% endblock %}
+{% block body %}
+    {%  if category is defined %}
+        {% for categorydata in category %}
+            <h1  align="center" > {{ categorydata.title }} </h1>
+            <p align="center"><img src="{{ asset('uploads/afisler/' ~ categorydata.preview_img) }}" style="width:200px;height:121px;"></p>
+            {{ categorydata.id }}-{{ categorydata.content }} <hr>
+        {% endfor %}
+
+    {% endif %}
+
+{% endblock %}

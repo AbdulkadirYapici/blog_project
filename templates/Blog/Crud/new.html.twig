@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}New Blog{% endblock %}
+{% block body %}
+
+    {{ form_start(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.slug) }}
+    {{ form_row(form.preview_img) }}
+    {{ form_row(form.content) }}
+    {{ form_row(form.summary) }}
+    {{ form_row(form.status) }}
+
+    <button type="submit">Register!</button>
+    {{ form_end(form) }}
+
+    <div class="alert alert-danger">{{ error }}</div>
+
+{% endblock %}

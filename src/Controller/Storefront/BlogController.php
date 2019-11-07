@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route as BaseRoute;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\Type\BlogType;
 
 class BlogController extends AbstractController {
     /**
@@ -60,6 +61,8 @@ class BlogController extends AbstractController {
 
         );
     }
+
+
 
 
 }
