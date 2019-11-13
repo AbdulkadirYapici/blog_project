@@ -89,6 +89,6 @@ class Category
     }
     public function __toString()
     {
-        return sprintf("%s %s %s",$this->id , $this->name, $this->blog_id);
+        return sprintf("%s ", $this->name);
     }
 }

@@ -6,12 +6,43 @@
         <br>
         {%  if blog is defined %}
             {% for blogdata in blog %}
+                {%  if blogdata.status == 1  %}
+
                     <h1>{{  blogdata.title }}</h1> <br>
                     <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;">
                 <br>{{ blogdata.id }}-{{ blogdata.content }} <hr>
-            {% endfor %}
+        {% endif %}
+
+        {% endfor %}
 
         {% endif %}
+        <form action="/blogcontent" method="GET">
+            <input id="page" name="page" type="text" placeholder="Go To Page">
+            <input id="submit" type="submit" value="page">
+        </form>
+        <form action="/blogcontent" method="POST">
+            <input id="cpp" name="cpp" type="text" placeholder="Content Per Page ">
+            <input id="submit" type="submit" value="cpp">
+        </form>
+
+        <tr><a href="{{ url('bContent', {page: 1 }) }} "> <button type="button">ilk sayfa</button> </a></tr>
+
+
+        {% for i in 2..toplam_sayfa %}
+            {%  if  i  == current_page %}
+                <tr><a>Geçerli Sayfa: {{ i }}  </a></tr>
+            {% else %}
+                {% if current_page -4> i %}
+                {% elseif  current_page +4< i %}
+                {% else %}
+                    <tr><a href="{{ url('bContent', {page: i }) }} "> <button type="button"> {{ i }}</button> </a></tr>
+                {% endif %}
+
+            {% endif %}
+
+        {% endfor %}
+        <tr><a href="{{ url('bContent', {page: toplam_sayfa }) }} "> <button type="button">Son sayfa</button> </a></tr>
+
 
     </div>
 

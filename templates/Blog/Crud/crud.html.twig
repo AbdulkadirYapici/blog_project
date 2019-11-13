@@ -3,15 +3,92 @@
 {% block title %}Blog İcerikleri{% endblock %}
 {% block body %}
     <div class = "showContentDiv" >
-        <br>
         <a href="{{ url('create_blog_page') }} "> <button type="button">Create New Blog</button> </a><hr>
+
+
+        <table border="1" style="width: 80%;">
+            <thead>
+            <tr>
+                <td>Title</td>
+                <td>Preview Image</td>
+                <td>Status</td>
+                <td>Content</td>
+                <td>Summary</td>
+                <td>Actions</td>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for blogdata in blog %}
+                <tr>
+                    <td>{{ blogdata.title }}</td>
+                    <td>{{ blogdata.preview_img }}<img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"></td>
+                    <td>{{ dump(blogdata.status) }}</td>
+                    <td>{{ blogdata.content }}</td>
+                    <td>{{ blogdata.summary }}</td>
+                    <td><a href="{{ url('delete_page', {id: blogdata.id}) }} "> <button type="button">Delete This Blog</button> </a></td>
+                    <td><a href="{{ url('edit_blog_page', {id: blogdata.id}) }} "> <button type="button">Edit This Blog</button> </a></td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <form action="/crud" method="GET">
+            <input id="page" name="page" type="text" placeholder="Go To Page">
+            <input id="submit" type="submit" value="page">
+        </form>
+        <form action="/crud" method="POST">
+            <input id="cpp" name="cpp" type="text" placeholder="Content Per Page ">
+            <input id="submit" type="submit" value="cpp">
+        </form>
+        <tr><a href="{{ url('crud_page', {page: 1 }) }} "> <button type="button">ilk sayfa</button> </a></tr>
+
+
+        {% for i in 2..toplam_sayfa %}
+            {%  if  i  == current_page %}
+                <a>[{{ i }}] </a>
+
+                {% else %}
+                    {% if current_page -4> i %}
+                        {% elseif  current_page +4< i %}
+                            {% else %}
+                    <a href="{{ url('crud_page', {page: i }) }} "><button type="button">{{ i }}</button></a>
+                    {% endif %}
+
+            {% endif %}
+
+        {% endfor %}
+        <a href="{{ url('crud_page', {page: toplam_sayfa }) }} "><button type="button">Son sayfa</button></a>
+
+
+    </div>
+    {#
+        <td><select name="plan" data-placeholder="Select Your Preferred Plan">
+                <option>Select One</option>
+    {% for categories in category %}
+    <option value="5000">Basic Plan - ₦5,000</option>
+    <option value="10000">Advanced Plan - ₦10,000</option>
+    <option value="20000">Professional Plan - ₦20,000</option>
+    </select></td>
+    #}
+
+{#
+
+   <div class = "showContentDiv" >
+        <a href="{{ url('create_blog_page') }} "> <button type="button">Create New Blog</button> </a><hr>
+
 
         {%  if blog is defined %}
             {% for blogdata in blog %}
-                <h1>{{  blogdata.title }}</h1> <br>
-                <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;">
-                <br>{{ blogdata.id }}-{{ blogdata.content }} <br>
-                <a href="{{ url('delete_page', {id: blogdata.id}) }} "> <button type="button">Delete This Blog</button> </a><hr>
+                {% if blogdata.status == 1%}
+                    Title= <h3> {{  blogdata.title }}</h3>
+                    <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;">
+                    <br>-{{ blogdata.content }}-
+                    <a href="{{ url('delete_page', {id: blogdata.id}) }} "> <button type="button">Delete This Blog</button> </a>
+                    <a href="{{ url('edit_blog_page', {id: blogdata.id}) }} "> <button type="button">Edit This Blog</button> </a>
+
+                {% endif %}
             {% endfor %}
 
 
@@ -19,6 +96,9 @@
 
 
     </div>
+
+#}
+
 
 {% endblock %}
 

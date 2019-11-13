@@ -58,7 +58,6 @@ class RegistrationController extends Controller
                 $entityManager->flush();
             }
 
-            exit();
             // ... do any other work - like sending them an email, etc
             // maybe set a "flash" success message for the user
 

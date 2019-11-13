@@ -4,6 +4,8 @@
 {% block body %}
     <div class = "showContentDiv" >
         {%  if blog is defined %}
+        {%  if blog.status == 1 %}
+
             <br>
                 <img src="{{ asset('uploads/afisler/' ~ blog.preview_img) }}" style="width:200px;height:121px;">
 <div>
@@ -12,7 +14,7 @@
     {{ blog.id }}-{{ blog.content }} <hr>
 
 </div>
-
+        {% endif %}
         {% endif %}
 
 
