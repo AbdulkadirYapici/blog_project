@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-
 use App\Entity\Blog;
 use App\Entity\Category;
 use App\Entity\Tag;
@@ -41,7 +40,9 @@ public $entityManager;
         $contentPerPage = (int)$request->request->get(self::CPP);
         /** @var Session $session */
         $session = $this->get("session");
-
+        if ($contentPerPage >= 100) {
+            $contentPerPage = 10;
+        }
         if ($contentPerPage < 0) {
             $contentPerPage = 5;
         }
@@ -130,8 +131,86 @@ public $entityManager;
      */
     public function deleteContent(Request $request)
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, "Buraya erisim hakkiniz bulunmamaktadir");
 
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, "Buraya erisim hakkiniz bulunmamaktadir");
+        $repository = $this->getDoctrine()->getRepository(Blog::class);
+        $page = (int)$request->query->get('page');
+        $contentPerPage = (int)$request->request->get(self::CPP);
+        /** @var Session $session */
+        $session = $this->get("session");
+        if ($contentPerPage >= 100) {
+            $contentPerPage = 10;
+        }
+        if ($contentPerPage < 0) {
+            $contentPerPage = 5;
+        }
+        if ($contentPerPage == 0) {
+            if ($session->get(self::CPP) === null) {
+                $session->set(self::CPP, 5);
+            }
+        } else {
+            $session->set(self::CPP, $contentPerPage);
+        }
+        $contentPerPage = $session->get(self::CPP);
+
+        /* ESKI CACHE HALI
+        if($cpp <= 0){
+            $cpp = 0;
+        }
+
+        if($cpp == 0){
+            $cacheDataReturn['cpp'] = (int) $this->cache_get('cpp');
+            if($cacheDataReturn['cpp'] == NULL){
+                $cpp = 10; //değer kullanıcıdan alınacak
+                $this->cache_set('cpp', $cpp);
+            }
+            else{
+                $cpp= $cacheDataReturn['cpp'];
+            }
+        }
+        else{
+            $this->cache_set('cpp', $cpp);
+        }
+        */
+
+// createQueryBuilder() automatically selects FROM AppBundle:Product
+// and aliases it to "p"
+
+        //apc_store('cpp', 2);
+        //var_dump(apc_fetch('$contentPerPage'));
+
+
+        $query = $repository->createQueryBuilder('b')
+            ->select('COUNT(b.id)')
+            ->where('b.status= :status')
+            ->orderBy('b.id', 'DESC')
+            ->setParameter('status', 1)
+            ->getQuery();
+        $countOfDbItems = (int)$query->getSingleScalarResult();
+        //var_dump(count($countOfDbItems));
+
+        $totalPageNumber = ceil($countOfDbItems / $contentPerPage);
+
+        if ($page == NULL || $page > $totalPageNumber || $page == 0) {
+            $page = 1;
+        }
+
+        $getContentBaseNumber = ($page - 1) * $contentPerPage;
+
+        //dump($totalPageNumber);
+        $query = $repository->createQueryBuilder('p')
+            ->where('p.status= :status')
+            ->orderBy('p.id', 'ASC')
+            ->setParameter('status', 1)
+            ->setFirstResult($getContentBaseNumber)
+            ->setMaxResults($contentPerPage)
+            ->getQuery();
+
+        $contents = $query->getResult();
+
+        //dump($contents);
+        //dump($query->getSQL());
         $id = $request->query->get('id');
 
         $em = $this->getDoctrine()->getManager();
@@ -146,8 +225,9 @@ public $entityManager;
 
 
         return $this->render('Blog/Crud/crud.html.twig', [
-
-                'blog'=> $blog,
+                'blog'=> $contents,
+                'toplam_sayfa'=> $totalPageNumber,
+                'current_page' => $page,
             ]
 
         );
@@ -284,14 +364,14 @@ public $entityManager;
             }
             else{
 
-                return $this->render('Blog/Crud/edit.html.twig', [
+                return $this->render('Blog/Crud/new.html.twig', [
                     'form' => $form->createView(),
                     'error'=> $this->error,
                 ]);
             }
         }
 
-        return $this->render('Blog/Crud/edit.html.twig', [
+        return $this->render('Blog/Crud/new.html.twig', [
             'form' => $form->createView(),
             'error'=> $this->error,
         ]);
@@ -467,14 +547,14 @@ public $entityManager;
             }
             else{
 
-                return $this->render('Blog/Crud/new.html.twig', [
+                return $this->render('Blog/Crud/edit.html.twig', [
                     'form' => $form->createView(),
                     'error'=> $this->error,
                 ]);
             }
         }
 
-        return $this->render('Blog/Crud/new.html.twig', [
+        return $this->render('Blog/Crud/edit.html.twig', [
             'form' => $form->createView(),
             'error'=> $this->error,
         ]);

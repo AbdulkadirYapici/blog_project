@@ -23,6 +23,8 @@ class RegistrationController extends Controller
         $error="";
         // 1) build the form
         $user = new User();
+        //$blog->set('Write a blog post');
+        $user->setAuthority('');
         $form = $this->createForm(UserType::class, $user);
 
         // 2) handle the submit (will only happen on POST)

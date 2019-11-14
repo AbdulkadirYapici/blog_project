@@ -21,13 +21,12 @@
     </section>
 </section>
 
-        <div class = "homePageDiv" >
             {%  if blog is defined %}
 
                 {% for blogdata in blog %}
                     {% if blogdata.status == 1%}
 
-                    <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"> {{ blogdata.id }}-{{ blogdata.summary }}  <a href="{{ url('single_entry_show', {id: blogdata.id}) }} ">Yazıya git</a> <hr>
+                    <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"> {{ blogdata.summary }}  <a href="{{ url('single_entry_show', {id: blogdata.id}) }} ">Yazıya git</a> <hr>
                     {% endif %}
 
                 {% endfor %}
@@ -35,7 +34,6 @@
             {% endif %}
 
 
-        </div>
 
 
 {% endblock %}

@@ -41,14 +41,28 @@ class BlogController extends AbstractController
     /**
      * @BaseRoute("/", name="homepage")
      */
-    public function indexAction()
+    public function indexAction(EntityManagerInterface $entityManager)
     {
         //$this->denyAccessUnlessGranted('ROLE_ADMIN', null, "Buraya erisim hakkiniz bulunmamaktadir");
-        $blogRepository = $this->getDoctrine()->getRepository(blog::class);
-        $blog = $blogRepository->findAll();
+        /*$blogRepository = $this->getDoctrine()->getRepository(blog::class);
+        $blog = $blogRepository->findById(100);*/
+        $this->entityManager = $entityManager;
+
+        $repository = $this->getDoctrine()->getRepository(Blog::class);
+        $query = $repository->createQueryBuilder('p')
+            ->where('p.status= :status')
+            ->orderBy('p.id', 'ASC')
+            ->setParameter('status', 1)
+            ->setFirstResult(0)
+            ->setMaxResults(5)
+            ->getQuery();
+
+        $contents = $query->getResult();
+
+
         return $this->render('Blog/Storefront/homePage.html.twig', [
 
-                'blog' => $blog,
+                'blog' => $contents,
             ]
 
         );
@@ -66,7 +80,9 @@ class BlogController extends AbstractController
         $contentPerPage = (int)$request->request->get(self::CPP);
         /** @var Session $session */
         $session = $this->get("session");
-
+        if ($contentPerPage >= 100) {
+            $contentPerPage = 10;
+        }
         if ($contentPerPage < 0) {
             $contentPerPage = 5;
         }
