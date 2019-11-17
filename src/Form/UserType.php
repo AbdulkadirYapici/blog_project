@@ -20,6 +20,7 @@ class UserType extends AbstractType
                 'mapped' => false ,
                 'required' => false,
                 'label' => false,
+                'attr'=>array('style'=>'display:none;'),
 
             ))
             ->add('email', EmailType::class)

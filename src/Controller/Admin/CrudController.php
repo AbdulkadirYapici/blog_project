@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -263,11 +264,13 @@ public $entityManager;
 
         $form = $this->createFormBuilder($blogClass)
             ->add('title', TextType::class)
+
             ->add('slug', TextType::class)
             ->add('preview_img', FileType::class, array(
                 'data_class' => null,
                 'required' => false,
                 'mapped' => false ,
+
             ))
             ->add('content', TextType::class)
             ->add('summary', TextType::class)
@@ -311,7 +314,6 @@ public $entityManager;
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager= $this->getDoctrine()->getManager();
-
             $categoryrepo= $entityManager->getRepository(Category::class);
 
             /** @var Category $categories */
@@ -548,6 +550,7 @@ public $entityManager;
             else{
 
                 return $this->render('Blog/Crud/edit.html.twig', [
+
                     'form' => $form->createView(),
                     'error'=> $this->error,
                 ]);
@@ -555,6 +558,7 @@ public $entityManager;
         }
 
         return $this->render('Blog/Crud/edit.html.twig', [
+            'blog'=> $blog,
             'form' => $form->createView(),
             'error'=> $this->error,
         ]);

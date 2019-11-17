@@ -1,27 +1,100 @@
 {% extends 'base.html.twig' %}
 {% block title %}New Blog{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+{% endblock %}
 {% block body %}
 
     {{ form_start(form) }}
-    {{ form_row(form.title) }}
-    {{ form_row(form.slug) }}
-    {{ form_row(form.preview_img) }}
-    {{ form_row(form.content) }}
-    {{ form_row(form.summary) }}
+    {{ form_label(form.title, 'Title') }}
+    {{ form_widget(form.title, {'attr': {'class': 'col-2'}}) }}<br>
+
+    {{ form_label(form.slug, 'Slug')}}
+    {{ form_widget(form.slug, {'attr': {'class': 'col-2'}}) }}<br>
+
+    {{ form_label(form.preview_img, label|default(null), { 'label_attr': { 'class': 'MYCLASS' } }) }}
+    {{ form_widget(form.preview_img, {'attr': {'class': 'col-2'}}) }}<br><br>
+
+
+
+    {{ form_label(form.content, 'Content') }}
+    {{ form_widget(form.content, {'attr': {'class': 'col-2'}}) }}<br>
+
+
+    {{ form_label(form.summary, 'Summary') }}
+    {{ form_widget(form.summary, {'attr': {'class': 'col-2'}}) }}
+   <br>
+
     {{ form_row(form.status) }}
-    {{ form_row(form.category2) }}
-    {{ form_row(form.tag2) }}
+
+    {{ form_label(form.category2, 'Category') }}
+    {{ form_widget(form.category2, {'attr': {'class': 'col-1'}}) }}<br>
+
+
+    {{ form_label(form.tag2, 'Tag') }}
+    {{ form_widget(form.tag2, {'attr': {'class': 'col-1'}}) }}
 
     <button type="submit" class="btn btn-primary">Register!</button>
 
     {{ form_end(form) }}
 
+    {#
+        <form name="form" method = "post">
+
+            <label for="form_title" class="required">Title</label>
+            <input type="text" id="form_title" name="form[title]" required="required" class="form-control">
+
+            <label for="form_slug" class="required">Slug</label>
+            <input type="text" id="form_slug" name="form[slug]" required="required" class="form-control">
+
+            <label for="form_preview_img">Preview img</label>
+            <div class="custom-file"><input type="file" id="form_preview_img" name="form[preview_img]" class="custom-file-input">
+                <label for="form_preview_img" class="custom-file-label"></label>
+            </div>
+
+
+            <label for="form_content" class="required">Content</label>
+            <input type="text" id="form_content" name="form[content]" required="required" class="form-control">
+
+            <label for="form_summary" class="required">Summary</label>
+            <input type="text" id="form_summary" name="form[summary]" required="required" class="form-control">
+
+
+            <label class="form-check-label" for="form_status">Show this entry publicly?</label>
+            <input type="checkbox" id="form_status" name="form[status]" class="form-check-input" value="1">
+
+            <label class="" for="form_category2">Category2</label><select id="form_category2" name="form[category2]" class="form-control">
+            <option value=""></option><option value="aksiyon">aksiyon</option><option value="macera">macera</option><option value="gerilim">gerilim</option></select>
+
+            <label class="" for="form_tag2">Tag2</label>
+            <select id="form_tag2" name="form[tag2]" class="form-control"><option value=""></option><option value="doğa">doğa</option><option value="mutluluk">mutluluk</option><option value="güç">güç</option><option value="sevgi">sevgi</option></select>
+
+            <input type="text" id="form_createdAt" name="form[createdAt]" required="required" style="display:none;" class="form-control" value="2019-11-15  10:09">
+
+            <input type="text" id="form_updatedAt" name="form[updatedAt]" required="required" style="display:none;" class="form-control" value="2019-11-15  10:09">
+            <button type="submit" class="btn btn-primary">Register!</button>
+        </form>
+
+    #}
+        {#
+            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+            See https://symfony.com/doc/current/security/remember_me.html
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" name="_remember_me"> Remember me
+                </label>
+            </div>
+        #}
+
+    </form>
 {{ error }}
 
-{% endblock %}
-
-{% block head_css %}
-{{ parent() }}
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    {% block javascripts %}
+        {{parent()}}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src= "{{asset('js/changeClass.js')}}"></script>
+    {% endblock %}
 {% endblock %}
