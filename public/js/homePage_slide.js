@@ -18,3 +18,24 @@ function carousel() {
     setTimeout(carousel, 3000);
 }
 
+
+
+$("#hideMenu").click(function() {
+    var menu = $("#menu");
+
+$(menu).hide();
+
+});
+
+
+/*
+
+$("#hideMenu").click(function() {
+    var menu = $("#menu");
+    if ($(menu).is(":visible")) {
+        $(menu).animate({width: 0}, 1000, function() {$(menu).hide();});
+    } else {
+        $(menu).show().animate({width: 100}, 1000);
+    }
+});​
+ */

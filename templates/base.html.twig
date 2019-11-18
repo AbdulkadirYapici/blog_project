@@ -8,6 +8,8 @@
         {% endblock %}
 
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/3/w3.css">
+        <link href="{{ asset('css/sideNav.css') }}" rel="stylesheet">
+
         <link href="{{ asset('css/main.css') }}" rel="stylesheet"/>
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
@@ -30,7 +32,7 @@
         </form>
     </nav>
 
-        {% block body %}{% endblock %}
+    {% block body %}{% endblock %}
 
 
     {% block head_js %}

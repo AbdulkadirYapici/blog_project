@@ -13,6 +13,22 @@
     {% endfor %}
     {% endif %}
 
+    <!-- Side navigation -->
+    <div id="menu" class="sidenav">
+        <a href="/blogcontent" style="background: palegoldenrod">Go To Blogs</a>
+        {%  if blog is defined %}
+
+            {% for blogdata in blog %}
+                {% if blogdata.status == 1%}
+
+                    {{ blogdata.summary }}  <a href="{{ url('single_entry_show', {id: blogdata.id}) }} ">Yazıya git</a> <hr>
+                {% endif %}
+
+            {% endfor %}
+
+        {% endif %}
+        <button id="hideMenu">Toggle menu</button>​
+    </div>
 
 
     <section class="w3-container w3-center" style="max-width:100%" >
