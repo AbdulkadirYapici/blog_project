@@ -50,7 +50,7 @@
                     <td>{{ dump(blogdata.status) }}</td>
                     <td>{{ blogdata.content }}</td>
                     <td>{{ blogdata.summary }}</td>
-                    <td><a href="{{ url('delete_page', {id: blogdata.id}) }} "> <button button type="button" class="btn btn-danger">Delete This Blog</button> </a></td>
+                    <td><button onclick="sure({{blogdata.id}})" type="button" class="btn btn-danger">Delete This Blog</button> </td>
                     <td><a href="{{ url('edit_blog_page', {id: blogdata.id}) }} "> <button type="button" class="btn btn-warning">Edit This Blog</button> </a></td>
 
                 </tr>
@@ -180,6 +180,8 @@
         {% block javascripts %}
             {{parent()}}
             <script src="{{ asset('js/dataTables.js') }}"></script>
+            <script src="{{ asset('js/deleteConfirm.js') }}"></script>
+
             <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
         {% endblock %}
 

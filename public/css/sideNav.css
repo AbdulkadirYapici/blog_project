@@ -8,7 +8,7 @@ body {
   z-index: 1;
   top: 20px;
   right : 10px;
-  background: red;
+  background: #0be397;
   overflow-x: hidden;
   padding: 8px 0;
 }
@@ -22,7 +22,7 @@ body {
 }
 
 .sidenav a:hover {
-  color: #064579;
+  color: red;
 }
 
 .main {

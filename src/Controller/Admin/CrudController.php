@@ -264,6 +264,7 @@ public $definedTag= "";
         $blogClass = new Blog();
         //$blog->set('Write a blog post');
         $blogClass->setCreatedAt(new \DateTime());
+        $blogClass->setUpdatedAt(new \DateTime());
 
         $allCategoriesRepository = $this->getDoctrine()-> getRepository(Category::class);
         $allCategoriesArr = [];
@@ -329,70 +330,87 @@ public $definedTag= "";
                 'preferred_choices' => 'Please select tag'
             ])
             ->getForm();
-
+/*$form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $submittedToken = $request->request->get('token');
+            if ($this->isCsrfTokenValid('edit', $submittedToken)) {
+            }else{
+            }*/
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager= $this->getDoctrine()->getManager();
-            $categoryrepo= $entityManager->getRepository(Category::class);
 
-            /** @var Category $categories */
+        if ($form->isSubmitted()) {
+            $submittedToken = $request->request->get('token');
+            if ($this->isCsrfTokenValid('new', $submittedToken)) {
 
-            $categories = $categoryrepo->findByName($file = $form->get('category2')->getData());
+                $entityManager= $this->getDoctrine()->getManager();
+                $categoryrepo= $entityManager->getRepository(Category::class);
 
-            if($categories != NULL) {
-                $blogClass->addCategoryId($categories[0]);
+                /** @var Category $categories */
+
+                $categories = $categoryrepo->findByName($file = $form->get('category2')->getData());
+
+                if($categories != NULL) {
+                    $blogClass->addCategoryId($categories[0]);
+                }
+                else{
+                    $this->error = $this->error . " Category bulunamadı! ";
+
+                }
+
+                $tagrepo= $entityManager->getRepository(Tag::class);
+
+                /** @var Tag $tag */
+
+                $tag = $tagrepo->findByName($file = $form->get('tag2')->getData());
+
+                if($tag != NULL) {
+                    $blogClass->addTagId($tag[0]);
+                }
+                else{
+                    $this->error = $this->error . " Tag bulunamadı! ";
+
+                }
+
+                /** @var UploadedFile $file */
+                if($file = $form->get('preview_img')->getData() != NULL){
+                    $file = $form->get('preview_img')->getData();
+
+                    $fileName= $this-> randomNameForUploadedFile() . '.' . $file->guessExtension() ;
+                    $file->move($this->getParameter('afis_folder'), $fileName);
+
+                    $blogClass->setPreviewImg($fileName);
+
+                }
+
+
+
+
+
+                // ... do any other work - like sending them an email, etc
+                // maybe set a "flash" success message for the user
+                if(empty($this->error)){
+                    $entityManager->persist($blogClass);
+                    $entityManager->flush();
+                    return $this->redirectToRoute('crud_page');
+                }
+                else{
+
+                    return $this->render('Blog/Crud/new.html.twig', [
+                        'categories' => $allCategoriesArr,
+                        'tags'=>$allTagsArr,
+                        'form' => $form->createView(),
+                        'error'=> $this->error,
+                    ]);
+                }
+            }else{
+
             }
-            else{
-                $this->error = $this->error . " Category bulunamadı! ";
 
-            }
-
-            $tagrepo= $entityManager->getRepository(Tag::class);
-
-            /** @var Tag $tag */
-
-            $tag = $tagrepo->findByName($file = $form->get('tag2')->getData());
-
-            if($tag != NULL) {
-                $blogClass->addTagId($tag[0]);
-            }
-            else{
-                $this->error = $this->error . " Tag bulunamadı! ";
-
-            }
-
-            /** @var UploadedFile $file */
-            if($file = $form->get('preview_img')->getData() != NULL){
-                $file = $form->get('preview_img')->getData();
-
-                $fileName= $this-> randomNameForUploadedFile() . '.' . $file->guessExtension() ;
-                $file->move($this->getParameter('afis_folder'), $fileName);
-
-                $blogClass->setPreviewImg($fileName);
-
-            }
-
-
-
-
-
-            // ... do any other work - like sending them an email, etc
-            // maybe set a "flash" success message for the user
-            if(empty($this->error)){
-                $entityManager->persist($blogClass);
-                $entityManager->flush();
-                return $this->redirectToRoute('crud_page');
-            }
-            else{
-
-                return $this->render('Blog/Crud/new.html.twig', [
-                    'form' => $form->createView(),
-                    'error'=> $this->error,
-                ]);
-            }
         }
 
         return $this->render('Blog/Crud/new.html.twig', [
+            'categories' => $allCategoriesArr,
+            'tags'=>$allTagsArr,
             'form' => $form->createView(),
             'error'=> $this->error,
         ]);

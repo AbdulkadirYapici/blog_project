@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
     {% block stylesheets %}
         {{ parent() }}
+        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+
         <link href="{{ asset('css/homePage.css') }}" rel="stylesheet">
     {% endblock %}
 {% block body %}
@@ -21,7 +23,7 @@
 
     <!-- Side navigation -->
     <div id="menu" class="sidenav">
-        <a href="/blogcontent" style="background: palegoldenrod">Go To Blogs</a>
+        <a href="/blogcontent" style="background: #04ba7b">Last Blogs</a>
         {%  if blog is defined %}
 
             {% for blogdata in blog %}
@@ -33,7 +35,9 @@
             {% endfor %}
 
         {% endif %}
-        <button id="hideMenu">Toggle menu</button>​
+            <button id="hideMenu" class="btn btn-outline-info btn-rounded btn-block waves-effect z-depth-0" type="submit" style="color: #b21f2d ;   opacity: 1.0; background: #7db9da" >Toggle menu</button>​
+
+
     </div>
 
 

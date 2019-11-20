@@ -44,7 +44,118 @@
 
 
 </body>
+    <body style="background:#42c8f5; ">
 
+    <!-- Material form register -->
+    <div style="width: 60% ; margin: 0 auto;  margin-top: 10%;" >
+
+        <div class="text-center border border-light p-5" style="background:#42c8f5;">
+
+
+            <!--Card content-->
+            <div class="card-body px-lg-5 pt-0">
+                <!-- Form -->
+                <form name="form" class="text-center" method="post" enctype="multipart/form-data">
+                    <p class="h4 mb-4 ">Create New Entry</p>
+
+                    {% if error %}
+                        <div class="alert alert-danger">   {{  error }} </div>
+                    {% endif %}
+                    <div class="form-row">
+                        <div class="col">
+                            <!-- First name -->
+                            <div class="md-form">
+                                <input type="text" name= "form[title]" id="form_title" class="form-control" required="required" >
+                                <label class="required" for="form_title">Title</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="md-form mt-0">
+                        <input type="text" id="form_slug" name="form[slug]" class="form-control" required="required" >
+                        <label class="required" for="form_slug">Slug</label>
+                    </div>
+
+
+                    <div class="custom-file">
+
+                        <input type="file" id="form_preview_img" class="" name="form[preview_img]"  ><br>
+                        <label class="" for="form_preview_img" style="display:none;"  >Preview Image</label>
+                    </div>
+
+
+                    <div class="md-form">
+                        <input type="text" id="form_content" name="form[content]" class="form-control" required="required" >
+                        <label class="required" for="form_content">Content</label>
+
+                    </div>
+
+                    <div class="md-form">
+                        <input type="text" id="form_summary" name="form[summary]" class="form-control" required="required" >
+                        <label class="required" for="form_summary">Summary</label>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group">
+
+                            <div class="md-form">
+                                <input type="checkbox" id="form_status" name="form[status]" class="form-check-input" checked="checked">
+                                <label class="form-check-label" for="form_status">Show This Entry?</label>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="md-form">
+                        <select id="form_category2" name="form[category2]" class="col-3" required="required" >
+                            {% for catkey in categories|keys %}
+                                    <option value={{ catkey }}>{{ catkey }}</option>
+                            {% endfor %}
+                        </select><br>
+
+                        <label class="" for="form_category2">Category</label>
+
+                        <div class="md-form">
+                            <select id="form_tag2" name="form[tag2]" class="col-3" required="required" >
+                                {% for tagkey in tags|keys %}
+                                        <option value={{ tagkey }}>{{ tagkey }}</option>
+                                {% endfor %}
+                            </select><br>
+
+                            <label class="" for="form_tag2">Tag</label>
+                        </div>
+                        <div class="form-group"><input type="text" id="form_createdAt" name="form[createdAt]" required="required" style="display:none;" class="form-control" value={{ "now"|date}}></div>
+                        <div class="form-group"><input type="text" id="form_updatedAt" name="form[updatedAt]" required="required" style="display:none;" class="form-control" value={{ "now"|date}}></div>
+                        {#
+                        <div class="form-group"><input type="text" id="form_createdAt" name="form[createdAt]" required="required" style="display:none;" class="form-control" value={{ blog[0].createdAt |date}} ></div>
+
+                        <div class="form-group"><input type="text" id="form_updatedAt" name="form[updatedAt]" required="required" style="display:none;" class="form-control" value={{ currentDateTimeC| date('Y-m-d\\TH:i:sP') }}></div>
+                        #}
+
+                        <input type="hidden" name="token" value="{{ csrf_token('new') }}"/>
+
+                        <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit" style="color: #b21f2d ;   opacity: 1.0;" >Create Entry</button>
+
+
+                        <hr>
+
+                        <!-- Terms of service -->
+                        <p>By clicking
+                            <em>Sign up</em> you agree to our
+                            <a href="" target="_blank">terms of service</a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </body>
     {#
         <form name="form" method = "post">
 

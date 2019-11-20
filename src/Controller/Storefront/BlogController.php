@@ -143,7 +143,7 @@ class BlogController extends AbstractController
         //dump($totalPageNumber);
         $query = $repository->createQueryBuilder('p')
             ->where('p.status= :status')
-            ->orderBy('p.id', 'ASC')
+            ->orderBy('p.id', 'DESC')
             ->setParameter('status', 1)
             ->setFirstResult($getContentBaseNumber)
             ->setMaxResults($contentPerPage)

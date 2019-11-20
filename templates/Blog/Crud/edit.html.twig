@@ -85,7 +85,7 @@
                         <div class="col">
                             <!-- First name -->
                             <div class="md-form">
-                                <input type="text" name= "form[title]" id="form_title" class="form-control" required="required" value={{ blog[0].title }}>
+                                <input type="text" name= "form[title]" id="form_title" class="form-control" required="required" value="{{ blog[0].title }}">
                                 <label class="required" for="form_title">Title</label>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
                     </div>
 
                     <div class="md-form mt-0">
-                        <input type="text" id="form_slug" name="form[slug]" class="form-control" required="required"  value={{ blog[0].slug }}>
+                        <input type="text" id="form_slug" name="form[slug]" class="form-control" required="required"  value="{{ blog[0].slug }}">
                         <label class="required" for="form_slug">Slug</label>
                     </div>
 
@@ -108,13 +108,13 @@
 
 
                     <div class="md-form">
-                        <input type="text" id="form_content" name="form[content]" class="form-control" required="required" value={{ blog[0].content }}>
+                        <input type="text" id="form_content" name="form[content]" class="form-control" required="required" value="{{ blog[0].content }}">
                         <label class="required" for="form_content">Content</label>
 
                     </div>
 
                     <div class="md-form">
-                        <input type="text" id="form_summary" name="form[summary]" class="form-control" required="required" value={{ blog[0].summary }}>
+                        <input type="text" id="form_summary" name="form[summary]" class="form-control" required="required" value="{{ blog[0].summary }}">
                         <label class="required" for="form_summary">Summary</label>
 
                     </div>
@@ -166,7 +166,7 @@
 
                             <input type="hidden" name="token" value="{{ csrf_token('edit') }}"/>
 
-                    <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit" style="color: #b21f2d ;   opacity: 1.0;" >Sign Up</button>
+                    <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit" style="color: #b21f2d ;   opacity: 1.0;" >Apply Changes</button>
 
 
                     <hr>
