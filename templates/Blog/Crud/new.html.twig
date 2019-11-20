@@ -6,39 +6,44 @@
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 {% endblock %}
 {% block body %}
-
-    {{ form_start(form) }}
-    {{ form_label(form.title, 'Title') }}
-    {{ form_widget(form.title, {'attr': {'class': 'col-2'}}) }}<br>
-
-    {{ form_label(form.slug, 'Slug')}}
-    {{ form_widget(form.slug, {'attr': {'class': 'col-2'}}) }}<br>
-
-    {{ form_label(form.preview_img, label|default(null), { 'label_attr': { 'class': 'MYCLASS' } }) }}
-    {{ form_widget(form.preview_img, {'attr': {'class': 'col-2'}}) }}<br><br>
+<body style="background:#42c8f5; ">
 
 
+{{ form_start(form) }}
+{{ form_label(form.title, 'Title') }}
+{{ form_widget(form.title, {'attr': {'class': 'col-2'}}) }}<br>
 
-    {{ form_label(form.content, 'Content') }}
-    {{ form_widget(form.content, {'attr': {'class': 'col-2'}}) }}<br>
+{{ form_label(form.slug, 'Slug')}}
+{{ form_widget(form.slug, {'attr': {'class': 'col-2'}}) }}<br>
 
-
-    {{ form_label(form.summary, 'Summary') }}
-    {{ form_widget(form.summary, {'attr': {'class': 'col-2'}}) }}
-   <br>
-
-    {{ form_row(form.status) }}
-
-    {{ form_label(form.category2, 'Category') }}
-    {{ form_widget(form.category2, {'attr': {'class': 'col-1'}}) }}<br>
+{{ form_label(form.preview_img, label|default(null), { 'label_attr': { 'class': 'MYCLASS' } }) }}
+{{ form_widget(form.preview_img, {'attr': {'class': 'col-2'}}) }}<br><br>
 
 
-    {{ form_label(form.tag2, 'Tag') }}
-    {{ form_widget(form.tag2, {'attr': {'class': 'col-1'}}) }}
 
-    <button type="submit" class="btn btn-primary">Register!</button>
+{{ form_label(form.content, 'Content') }}
+{{ form_widget(form.content, {'attr': {'class': 'col-2'}}) }}<br>
 
-    {{ form_end(form) }}
+
+{{ form_label(form.summary, 'Summary') }}
+{{ form_widget(form.summary, {'attr': {'class': 'col-2'}}) }}
+<br>
+
+{{ form_row(form.status) }}
+
+{{ form_label(form.category2, 'Category') }}
+{{ form_widget(form.category2, {'attr': {'class': 'col-1'}}) }}<br>
+
+
+{{ form_label(form.tag2, 'Tag') }}
+{{ form_widget(form.tag2, {'attr': {'class': 'col-1'}}) }}
+
+<button type="submit" class="btn btn-primary">Register!</button>
+
+{{ form_end(form) }}
+
+
+</body>
 
     {#
         <form name="form" method = "post">

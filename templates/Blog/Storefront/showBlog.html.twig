@@ -8,9 +8,23 @@
             {% for blogdata in blog %}
                 {%  if blogdata.status == 1  %}
 
-                    <h2>{{  blogdata.title }}</h2> <br>
-                    <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;">
-                <h5><br>{{ blogdata.id }}-{{ blogdata.content }} <hr></h5>
+                    <div style="width: 60% ; margin: 0 auto;  margin-top: 2%;" >
+
+                        <div class="text-center border border-light p-5" style="background:#42c8f5;">
+                            <div class="card-body px-lg-5 pt-0">
+
+
+
+
+                                <h1  align="center" > {{ blogdata.title }} </h1>
+                                <p align="center"><img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"></p>
+                                <p align="center" style="margin-right: 0px; ">                         <b>{{ blogdata.Summary }}</b><br>{{ blogdata.content }} <hr>
+                                </p>
+
+
+                            </div>
+                        </div>
+                    </div>
         {% endif %}
 
         {% endfor %}

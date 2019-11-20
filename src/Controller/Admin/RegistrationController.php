@@ -27,43 +27,57 @@ class RegistrationController extends Controller
         $user->setAuthority('');
         $form = $this->createForm(UserType::class, $user);
 
+
+
+
         // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $error = $authenticationUtils->getLastAuthenticationError();
+        if ($form->isSubmitted() ) {
+            $submittedToken = $request->request->get('token');
+            // 'delete-item' is the same value used in the template to generate the token
+            if ($this->isCsrfTokenValid('register', $submittedToken)) {
+                // ... do something, like deleting an object
+                $error = $authenticationUtils->getLastAuthenticationError();
 
-            //var_dump($error); exit();
-            $newEmail= $form->get('email')->getData();
-            // 3) Encode the password (you could also do this via Doctrine listener)
-            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
+                //var_dump($error); exit();
+                $newEmail= $form->get('email')->getData();
+                // 3) Encode the password (you could also do this via Doctrine listener)
+                $password = $passwordEncoder->encodePassword($user, $user->getPassword());
+                $user->setPassword($password);
 
-            // 4) save the User!
-            $entityManager = $this->getDoctrine()->getManager();
-            $existEmail = $this->getDoctrine()
-                ->getRepository(User::class)
-                ->findByEmail($newEmail);
+                // 4) save the User!
+                $entityManager = $this->getDoctrine()->getManager();
+                $existEmail = $this->getDoctrine()
+                    ->getRepository(User::class)
+                    ->findByEmail($newEmail);
 
-            if($existEmail != NULL){
-                //throw new \Exception('Email already exists.');
-                $error = "Girilen email başka bir kullanıcı tarafından kullanılıyor." ;
-                return $this->render(
-                    'registration/register.html.twig',[
+                if($existEmail != NULL){
+                    //throw new \Exception('Email already exists.');
+                    $error = "Girilen email başka bir kullanıcı tarafından kullanılıyor." ;
+                    return $this->render(
+                        'registration/register.html.twig',[
 
-                    'form' => $form->createView(),
-                    'error' => $error
-                ]);
+                        'form' => $form->createView(),
+                        'error' => $error
+                    ]);
+                }
+                else
+                {
+                    $entityManager->persist($user);
+                    $entityManager->flush();
+                }
+
+                // ... do any other work - like sending them an email, etc
+                // maybe set a "flash" success message for the user
+
+                return $this->redirectToRoute('user_registration');
             }
-            else
-            {
-                $entityManager->persist($user);
-                $entityManager->flush();
+            else{
+                var_dump("Token yanlış! ");exit();
+
             }
 
-            // ... do any other work - like sending them an email, etc
-            // maybe set a "flash" success message for the user
 
-            return $this->redirectToRoute('app_logout');
         }
 
         return $this->render(

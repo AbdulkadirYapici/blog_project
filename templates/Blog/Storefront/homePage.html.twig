@@ -1,16 +1,22 @@
 {% extends 'base.html.twig' %}
-
+    {% block stylesheets %}
+        {{ parent() }}
+        <link href="{{ asset('css/homePage.css') }}" rel="stylesheet">
+    {% endblock %}
 {% block body %}
+<body style="background: #42c8f5;">
+
+<br><br><br>
 <section>
     {%  if blog is defined %}
-    {% for blogdata in blog %}
-        <div class='homePageDiv'>
-            {% if blogdata.status == 1%}
+        {% for blogdata in blog %}
+            <div class='homePageDiv'>
+                {% if blogdata.status == 1%}
 
-            <a href="{{ url('single_entry_show', {id: blogdata.id}) }} "> <img  class="mySlides" src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}"  style="width:100%;height:500px;"></a>
-            {% endif %}
-        </div>
-    {% endfor %}
+                    <a href="{{ url('single_entry_show', {id: blogdata.id}) }} "> <img  class="mySlides" src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}"  style="width:100%;height:500px;"></a>
+                {% endif %}
+            </div>
+        {% endfor %}
     {% endif %}
 
     <!-- Side navigation -->
@@ -31,34 +37,35 @@
     </div>
 
 
+
     <section class="w3-container w3-center" style="max-width:100%" >
         <h2 class="w3-wide">Blog Contents</h2>
-        <p class="w3-opacity"><i>Gitmek istediğiniz blog yazısı için resme tıklayınız</i></p>
+        <p class="w3-opacity"><i>Gitmek istediğiniz blog yazısı için linke tıklayınız</i></p>
     </section>
 </section>
 
-            {%  if blog is defined %}
+{%  if blog is defined %}
 
-                {% for blogdata in blog %}
-                    {% if blogdata.status == 1%}
+    {% for blogdata in blog %}
+        {% if blogdata.status == 1%}
 
-                    <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"> {{ blogdata.summary }}  <a href="{{ url('single_entry_show', {id: blogdata.id}) }} ">Yazıya git</a> <hr>
-                    {% endif %}
+            <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"> {{ blogdata.summary }}  <a href="{{ url('single_entry_show', {id: blogdata.id}) }} ">Yazıya git</a> <hr>
+        {% endif %}
 
-                {% endfor %}
+    {% endfor %}
 
-            {% endif %}
-
-
+{% endif %}
 
 
+</body>
+
+    <div class="footer">
+        Footer is always bottom
+    </div>
 {% endblock %}
 
 {% block javascripts %}
     {{parent()}}
+
     <script src= "{{asset('js/homePage_slide.js')}}"></script>
-{% endblock %}
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ asset('css/homePage.css') }}" rel="stylesheet">
 {% endblock %}

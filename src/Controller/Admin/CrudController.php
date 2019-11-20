@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -26,6 +27,9 @@ use Symfony\Component\Security\Core\Security;
 class CrudController extends AbstractController {
 public $error= "";
 public $entityManager;
+public $definedCat= "";
+public $definedTag= "";
+
     const CPP = "cpp";
 
     /**
@@ -37,6 +41,7 @@ public $entityManager;
         $this->entityManager = $entityManager;
 
         $repository = $this->getDoctrine()->getRepository(Blog::class);
+
         $page = (int)$request->query->get('page');
         $contentPerPage = (int)$request->request->get(self::CPP);
         /** @var Session $session */
@@ -103,7 +108,7 @@ public $entityManager;
         //dump($totalPageNumber);
         $query = $repository->createQueryBuilder('p')
             ->where('p.status= :status')
-            ->orderBy('p.id', 'ASC')
+            ->orderBy('p.id', 'DESC')
             ->setParameter('status', 1)
             ->setFirstResult($getContentBaseNumber)
             ->setMaxResults($contentPerPage)
@@ -111,6 +116,13 @@ public $entityManager;
 
         $contents = $query->getResult();
 
+        $query = $repository->createQueryBuilder('p')
+            ->where('p.status= :status')
+            ->orderBy('p.id', 'DESC')
+            ->setParameter('status', 1)
+            ->getQuery();
+
+        $contents = $query->getResult();
         //dump($contents);
         //dump($query->getSQL());
 
@@ -210,6 +222,7 @@ public $entityManager;
 
         $contents = $query->getResult();
 
+
         //dump($contents);
         //dump($query->getSQL());
         $id = $request->query->get('id');
@@ -221,7 +234,13 @@ public $entityManager;
         $deleteItem= $blogRepository->findById($id);
         $em->remove($deleteItem[0]);
         $em->flush();
+        $query = $repository->createQueryBuilder('p')
+            ->where('p.status= :status')
+            ->orderBy('p.id', 'DESC')
+            ->setParameter('status', 1)
+            ->getQuery();
 
+        $contents = $query->getResult();
         $blog= $blogRepository->findAll();
 
 
@@ -398,7 +417,12 @@ public $entityManager;
 
         $blogClass = new Blog();
         //$blog->set('Write a blog post');
-        $blogClass->setCreatedAt(new \DateTime());
+        $blogClass->setCreatedAt($blog[0]->getCreatedAt());
+        $blogClass->setUpdatedAt(new \DateTime());
+
+        $currentDateTimeC= new \DateTime();
+        $currentDateTimeU= new \DateTime();
+
 
         $allCategoriesRepository = $this->getDoctrine()-> getRepository(Category::class);
         $allCategoriesArr = [];
@@ -417,6 +441,13 @@ public $entityManager;
         // creates a task object and initializes some data for this example
         //$form = $this->createForm(BlogType::class,$blogClass);
         $form = $this->createFormBuilder($blogClass)
+
+
+            ->add('id', IntegerType::class,array(
+                'attr'=>array('style'=>'display:none;'),
+                'label' => false,
+            ))
+
             ->add('title', TextType::class)
             ->add('slug', TextType::class)
             ->add('preview_img', FileType::class, array(
@@ -462,6 +493,8 @@ public $entityManager;
                 'preferred_choices' => 'Please select tag'
             ])
             ->getForm();
+
+        $form->get('id')->setData((int) $blog[0]->getId());
         $form->get('title')->setData($blog[0]->getTitle());
         $form->get('slug')->setData($blog[0]->getSlug());
         $form->get('content')->setData($blog[0]->getContent());
@@ -471,11 +504,14 @@ public $entityManager;
         if($blog != NULL) {
             foreach ($blog as $blogs) {
                 foreach ($blogs->getCategoryId() as $blogcat){
+                    $this->definedCat= $blogcat->getName();
                     $form->get('category2')->setData($blogcat->getName());
                 }
             }
             foreach ($blog as $blogs) {
                 foreach ($blogs->getTagId() as $blogcat){
+                    $this->definedTag= $blogcat->getName();
+
                     $form->get('tag2')->setData($blogcat->getName());
                 }
             }
@@ -486,78 +522,103 @@ public $entityManager;
 
 
             $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() ) {
+            $submittedToken = $request->request->get('token');
+            // 'delete-item' is the same value used in the template to generate the token
+            if ($this->isCsrfTokenValid('edit', $submittedToken)) {
+                $entityManager= $this->getDoctrine()->getManager();
 
-            $entityManager= $this->getDoctrine()->getManager();
+                $categoryrepo= $entityManager->getRepository(Category::class);
 
-            $categoryrepo= $entityManager->getRepository(Category::class);
+                /** @var Category $categories */
 
-            /** @var Category $categories */
+                $categories = $categoryrepo->findByName($file = $form->get('category2')->getData());
 
-            $categories = $categoryrepo->findByName($file = $form->get('category2')->getData());
+                if($categories != NULL) {
+                    $blogClass->addCategoryId($categories[0]);
 
-            if($categories != NULL) {
-                $blogClass->addCategoryId($categories[0]);
+                }
+                else{
+                    $this->error = $this->error . " Category bulunamadı! ";
+
+                }
+
+                $tagrepo= $entityManager->getRepository(Tag::class);
+
+                /** @var Tag $tag */
+
+                $tag = $tagrepo->findByName($file = $form->get('tag2')->getData());
+
+                if($tag != NULL) {
+                    $blogClass->addTagId($tag[0]);
+
+                }
+                else{
+                    $this->error = $this->error . " Tag bulunamadı! ";
+
+                }
+                //$error = $authenticationUtils->getLastAuthenticationError();
+
+                if($file = $form->get('preview_img')->getData() != NULL) {
+
+                    $file = $form->get('preview_img')->getData();
+                    $extension= $file->guessExtension();
+                    if($extension == "jpeg" or $extension=="jpg" or $extension == "png"){
+                        $fileName = $this->randomNameForUploadedFile() . '.' . $extension;
+                        $file->move($this->getParameter('afis_folder'), $fileName);
+                        $blogClass->setPreviewImg($fileName);
+
+                    }else{
+                        $this->error = $this->error . "Dosya uzantısı yanlış! Yalnız jpeg, jpg ve png uzantılı dosyalar yüklenebilir. ";
+                    }
+
+                }
+                else{
+                    $blogClass->setPreviewImg($blog[0]->getPreviewImg());
+
+                }
+
+                $categories = $categoryrepo->findByName($file = $form->get('category2')->getData());
+                $tag = $tagrepo->findByName($file = $form->get('tag2')->getData());
+
+
+
+                if(empty($this->error)){
+
+                    $blogClass->setId($blog[0]->getId());
+                    $em->remove($blog[0]);
+                    $em->flush();
+
+                    $em->persist($blogClass);
+                    $em->flush();
+                    return $this->redirectToRoute('crud_page');
+                }
+                else{
+
+                    return $this->render('Blog/Crud/edit.html.twig', [
+                        'categories' => $allCategoriesArr,
+                        'tags'=>$allTagsArr,
+                        'definedCat'=> $this->definedCat,
+                        'definedTag' => $this->definedTag,
+                        'blog'=> $blog,
+                        'form' => $form->createView(),
+                        'error'=> $this->error,
+                    ]);
+                }
+
+
+            }else{
+                var_dump("Token yanlış! ");exit();
 
             }
-            else{
-                $this->error = $this->error . " Category bulunamadı! ";
 
-            }
-
-            $tagrepo= $entityManager->getRepository(Tag::class);
-
-            /** @var Tag $tag */
-
-            $tag = $tagrepo->findByName($file = $form->get('tag2')->getData());
-
-            if($tag != NULL) {
-                $blogClass->addTagId($tag[0]);
-
-            }
-            else{
-                $this->error = $this->error . " Tag bulunamadı! ";
-
-            }
-            //$error = $authenticationUtils->getLastAuthenticationError();
-
-            if($file = $form->get('preview_img')->getData() != NULL) {
-
-                $file = $form->get('preview_img')->getData();
-
-                $fileName = $this->randomNameForUploadedFile() . '.' . $file->guessExtension();
-                $file->move($this->getParameter('afis_folder'), $fileName);
-
-                $blogClass->setPreviewImg($fileName);
-            }
-            else{
-                $blogClass->setPreviewImg($blog[0]->getPreviewImg());
-
-            }
-            $categories = $categoryrepo->findByName($file = $form->get('category2')->getData());
-            $tag = $tagrepo->findByName($file = $form->get('tag2')->getData());
-
-
-
-            if(empty($this->error)){
-                $em->remove($blog[0]);
-                $em->flush();
-
-                $em->persist($blogClass);
-                $em->flush();
-                return $this->redirectToRoute('crud_page');
-            }
-            else{
-
-                return $this->render('Blog/Crud/edit.html.twig', [
-
-                    'form' => $form->createView(),
-                    'error'=> $this->error,
-                ]);
-            }
         }
 
         return $this->render('Blog/Crud/edit.html.twig', [
+            'categories' => $allCategoriesArr,
+            'tags'=>$allTagsArr,
+            'definedCat'=> $this->definedCat,
+            'definedTag' => $this->definedTag,
             'blog'=> $blog,
             'form' => $form->createView(),
             'error'=> $this->error,

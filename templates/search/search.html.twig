@@ -4,28 +4,51 @@
 
 
 {% block body %}
-    {%  if error is defined %}
-        {{ error }}
-    {% endif %}
+    <body style="background: #42c8f5;">
+    <div style="width: 60% ; margin: 0 auto;  margin-top: 2%;" >
 
-    {%  if blogs is defined %}
-        {% for blogdata in blogs %}
-
-            <h1  align="center" > {{ blogdata.title }} </h1>
-            <p align="center"><img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"></p>
-            {{ blogdata.id }}-{{ blogdata.content }} <hr>
-        {% endfor %}
+        <div class="text-center border border-light p-5" style="background:#42c8f5;">
 
 
-    {% endif %}
+            <div class="card-body px-lg-5 pt-0">
 
-    {%  if category is defined %}
-        {% for categorydata in category %}
-            <h1  align="center" > {{ categorydata.title }} </h1>
-            <p align="center"><img src="{{ asset('uploads/afisler/' ~ categorydata.preview_img) }}" style="width:200px;height:121px;"></p>
-            {{ categorydata.id }}-{{ categorydata.content }} <hr>
-        {% endfor %}
+                {%  if error is defined %}
+                    {{ error }}
+                {% endif %}
 
-    {% endif %}
+                {%  if blogs is defined %}
+                    {% for blogdata in blogs %}
+
+                        <h1  align="center" > {{ blogdata.title }} </h1>
+                        <p align="center"><img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"></p>
+                        <p align="center" style="margin-right: 0px; ">                         <b>{{ blogdata.Summary }}</b><br>{{ blogdata.content }} <hr>
+                        </p>
+
+                    {% endfor %}
+
+
+                {% endif %}
+
+                {%  if category is defined %}
+                    {% for categorydata in category %}
+                        <h1  align="center" > {{ categorydata.title }} </h1>
+                        <p align="center"><img src="{{ asset('uploads/afisler/' ~ categorydata.preview_img) }}" style="width:200px;height:121px;"></p>
+                        <p align="center" style="margin-right: 0px; ">                         <b>{{ categorydata.Summary }}</b><br>{{ categorydata.content }}
+
+                        <hr>
+                    {% endfor %}
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    </body>
+
 
 {% endblock %}

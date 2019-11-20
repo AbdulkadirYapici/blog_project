@@ -1,19 +1,81 @@
 {% extends 'base.html.twig' %}
 
+
+  {% block stylesheets %}
+      {{ parent() }}
+      <link href="{{ asset('css/showBlog.css') }}" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+
+  {% endblock %}
+    {% block head_css %}
+        {{ parent() }}
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    {% endblock %}
+
+
+
 {% block title %}Blog İcerikleri{% endblock %}
 {% block body %}
+<div style="margin: 0 auto " align="center" >
+    <a href="{{ url('create_blog_page') }} "> <button  class="btn  btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit" style="background:#1ea471; color: #FFFFFF ; width: 200px ">Create New Blog</button> </a><hr>
+
+
+    </div>
+
+    <body style="background: #70a6fd">
+
+
+
+
+    <div style="width: 70%; margin:0 auto; ">
+        <table id="table_id" class="display" >
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Preview Image</th>
+                <th>Status</th>
+                <th>Content</th>
+                <th>Summary</th>
+                <th>Actions</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for blogdata in blog %}
+                <tr>
+                    <td>{{ blogdata.id }}</td>
+                    <td>{{ blogdata.title }}</td>
+                    <td><img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"></td>
+                    <td>{{ dump(blogdata.status) }}</td>
+                    <td>{{ blogdata.content }}</td>
+                    <td>{{ blogdata.summary }}</td>
+                    <td><a href="{{ url('delete_page', {id: blogdata.id}) }} "> <button button type="button" class="btn btn-danger">Delete This Blog</button> </a></td>
+                    <td><a href="{{ url('edit_blog_page', {id: blogdata.id}) }} "> <button type="button" class="btn btn-warning">Edit This Blog</button> </a></td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    {#
+
     <div class = "showContentDiv" >
         <a href="{{ url('create_blog_page') }} "> <button type="button" class="btn btn-primary" style="width:200px;height:80px;">Create New Blog</button> </a><hr>
 
         <table border="1" style="width: 100%;" class="table">
             <thead>
             <tr>
-                <td>Title</td>
-                <td>Preview Image</td>
-                <td>Status</td>
-                <td>Content</td>
-                <td>Summary</td>
-                <td>Actions</td>
+                <th>Title</th>
+                <th>Preview Image</th>
+                <th>Status</th>
+                <th>Content</th>
+                <th>Summary</th>
+                <th>Actions</th>
+                <th>Actions</th>
 
 
             </tr>
@@ -55,15 +117,15 @@
 
         {% for i in 1..toplam_sayfa %}
 
-                {% if i == current_page %}
-                  <button type="button" class="btn btn-primary btn-sm" style="background-color: #e7e7e7; color: black; pointer-events: none;" disabled>{{ i }}</button>
-                    {% else %}
-                            {% if current_page -4> i %}
-                                {% elseif  current_page +4< i %}
-                                    {% else %}
+            {% if i == current_page %}
+                <button type="button" class="btn btn-primary btn-sm" style="background-color: #e7e7e7; color: black; pointer-events: none;" disabled>{{ i }}</button>
+            {% else %}
+                {% if current_page -4> i %}
+                {% elseif  current_page +4< i %}
+                {% else %}
 
-                            <a href="{{ url('crud_page', {page: i }) }} "><button type="button" class="btn btn-primary btn-sm">{{ i }}</button></a>
-                            {% endif %}
+                    <a href="{{ url('crud_page', {page: i }) }} "><button type="button" class="btn btn-primary btn-sm">{{ i }}</button></a>
+                {% endif %}
 
             {% endif %}
 
@@ -72,6 +134,7 @@
 
 
     </div>
+    #}
 
     {#
         <td><select name="plan" data-placeholder="Select Your Preferred Plan">
@@ -83,41 +146,42 @@
     </select></td>
     #}
 
-{#
+    {#
 
-   <div class = "showContentDiv" >
-        <a href="{{ url('create_blog_page') }} "> <button type="button">Create New Blog</button> </a><hr>
-
-
-        {%  if blog is defined %}
-            {% for blogdata in blog %}
-                {% if blogdata.status == 1%}
-                    Title= <h3> {{  blogdata.title }}</h3>
-                    <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;">
-                    <br>-{{ blogdata.content }}-
-                    <a href="{{ url('delete_page', {id: blogdata.id}) }} "> <button type="button">Delete This Blog</button> </a>
-                    <a href="{{ url('edit_blog_page', {id: blogdata.id}) }} "> <button type="button">Edit This Blog</button> </a>
-
-                {% endif %}
-            {% endfor %}
+       <div class = "showContentDiv" >
+            <a href="{{ url('create_blog_page') }} "> <button type="button">Create New Blog</button> </a><hr>
 
 
-        {% endif %}
+            {%  if blog is defined %}
+                {% for blogdata in blog %}
+                    {% if blogdata.status == 1%}
+                        Title= <h3> {{  blogdata.title }}</h3>
+                        <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;">
+                        <br>-{{ blogdata.content }}-
+                        <a href="{{ url('delete_page', {id: blogdata.id}) }} "> <button type="button">Delete This Blog</button> </a>
+                        <a href="{{ url('edit_blog_page', {id: blogdata.id}) }} "> <button type="button">Edit This Blog</button> </a>
+
+                    {% endif %}
+                {% endfor %}
 
 
-    </div>
-
-#}
+            {% endif %}
 
 
+        </div>
+
+    #}
+
+
+
+
+    </body>
 {% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ asset('css/showBlog.css') }}" rel="stylesheet">
-{% endblock %}
-{% block head_css %}
-    {{ parent() }}
+        {% block javascripts %}
+            {{parent()}}
+            <script src="{{ asset('js/dataTables.js') }}"></script>
+            <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+        {% endblock %}
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-{% endblock %}
+

@@ -2,22 +2,29 @@
 
 {% block title %}Blog İcerikleri{% endblock %}
 {% block body %}
-    <div class = "showContentDiv" >
-        {%  if blog is defined %}
-        {%  if blog.status == 1 %}
+    <body style="background: #42c8f5;">
+    <div style="width: 60% ; margin: 0 auto;  margin-top: 2%;" >
 
-            <br>
-                <img src="{{ asset('uploads/afisler/' ~ blog.preview_img) }}" style="width:200px;height:121px;">
-<div>
-
-    <h3>{{ blog.content }}</h3> <hr>
-
-</div>
-        {% endif %}
-        {% endif %}
+        <div class="text-center border border-light p-5" style="background:#42c8f5;">
+            <div class="card-body px-lg-5 pt-0">
 
 
+
+
+ <h1  align="center" > {{ blog.title }} </h1>
+                        <p align="center"><img src="{{ asset('uploads/afisler/' ~ blog.preview_img) }}" style="width:200px;height:121px;"></p>
+                        <p align="center" style="margin-right: 0px; ">                         <b>{{ blog.Summary }}</b><br>{{ blog.content }} <hr>
+                        </p>
+
+
+        </div>
+            </div>
     </div>
+
+    </body>
+
+
+
 
 {% endblock %}
 
