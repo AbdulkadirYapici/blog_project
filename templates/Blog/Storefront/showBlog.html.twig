@@ -1,7 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Blog İcerikleri{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/showBlog.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block head_css %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+{% endblock %}
 {% block body %}
+    <body>
+
     <div class = "showContentDiv" >
         <br>
         {%  if blog is defined %}
@@ -25,9 +37,9 @@
                             </div>
                         </div>
                     </div>
-        {% endif %}
+                {% endif %}
 
-        {% endfor %}
+            {% endfor %}
 
         {% endif %}
         <tr>
@@ -66,16 +78,7 @@
         <a href="{{ url('bContent', {page: toplam_sayfa }) }} "><button type="button" class="btn btn-primary btn-sm">Son sayfa</button></a>
 
     </div>
+    </body>
 
 {% endblock %}
 
-{% block stylesheets %}
-{{ parent() }}
-<link href="{{ asset('css/showBlog.css') }}" rel="stylesheet">
-{% endblock %}
-
-{% block head_css %}
-    {{ parent() }}
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-{% endblock %}

@@ -45,7 +45,12 @@ class BlogController extends AbstractController
     public function indexAction(EntityManagerInterface $entityManager, Security $security )
     {
         $user = $security->getUser();
-        $username= $user->getUsername();
+        if($user ===NULL){
+            $username= "Ziyaretçi";
+        }
+        else{
+            $username= $user->getUsername();
+        }
 
         //$this->denyAccessUnlessGranted('ROLE_ADMIN', null, "Buraya erisim hakkiniz bulunmamaktadir");
         /*$blogRepository = $this->getDoctrine()->getRepository(blog::class);
