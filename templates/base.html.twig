@@ -17,19 +17,27 @@
 
     </head>
     <body>
+
+
+
+
     <!-- Navigation -->
     <nav class="w3-bar w3-black">
+        {% if username is defined %}
+            <p style="float: right; font-size: 16px"> <b >Hoşgeldin {{ username }}</b></p>
+        <!--<p style="float: right;"><a href="/{{ path('app_logout') }}" > Çıkış Yap </a></p>-->
+        {% endif %}
         <a href="/" class="w3-button w3-bar-item">Home</a>
         <a href="/blogcontent" class="w3-button w3-bar-item">Show Blog Contents</a>
         <a href="/register" class="w3-button w3-bar-item">Sing Up</a>
         <a href="/login" class="w3-button w3-bar-item">Sign In</a>
         <a href="/logout" class="w3-button w3-bar-item">Sign Out</a>
         <a href="/crud" class="w3-button w3-bar-item">Admin Panel</a>
-
         <form action="/result" method="GET">
             <input id="search" name="search" type="text" placeholder="Type here">
             <input id="submit" type="submit" value="Search">
         </form>
+
     </nav>
 
     </body>

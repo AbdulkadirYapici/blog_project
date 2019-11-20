@@ -6,7 +6,7 @@ body {
   width: 240px;
   position: fixed;
   z-index: 1;
-  top: 20px;
+  top: 50px;
   right : 10px;
   background: #0be397;
   overflow-x: hidden;

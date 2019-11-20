@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route as BaseRoute;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\Type\BlogType;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Security\Core\Security;
 
 class BlogController extends AbstractController
 {
@@ -41,8 +42,11 @@ class BlogController extends AbstractController
     /**
      * @BaseRoute("/", name="homepage")
      */
-    public function indexAction(EntityManagerInterface $entityManager)
+    public function indexAction(EntityManagerInterface $entityManager, Security $security )
     {
+        $user = $security->getUser();
+        $username= $user->getUsername();
+
         //$this->denyAccessUnlessGranted('ROLE_ADMIN', null, "Buraya erisim hakkiniz bulunmamaktadir");
         /*$blogRepository = $this->getDoctrine()->getRepository(blog::class);
         $blog = $blogRepository->findById(100);*/
@@ -61,7 +65,7 @@ class BlogController extends AbstractController
 
 
         return $this->render('Blog/Storefront/homePage.html.twig', [
-
+                'username' => $username,
                 'blog' => $contents,
             ]
 
