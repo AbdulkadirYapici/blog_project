@@ -4,6 +4,7 @@ namespace App\Controller\Storefront;
 
 
 use App\Entity\Blog;
+use App\Service\GetUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,13 @@ use Symfony\Component\Security\Core\Security;
 
 class BlogController extends AbstractController
 {
+    private $username= "";
+
+    public function __construct(GetUser $ServiceUsername )
+    {
+        $this->username = $ServiceUsername->getCurrentName();
+    }
+
 
     const CPP = "cpp";
 
@@ -42,16 +50,8 @@ class BlogController extends AbstractController
     /**
      * @BaseRoute("/", name="homepage")
      */
-    public function indexAction(EntityManagerInterface $entityManager, Security $security )
+    public function indexAction(EntityManagerInterface $entityManager, Security $security)
     {
-        $user = $security->getUser();
-        if($user ===NULL){
-            $username= "Ziyaretçi";
-        }
-        else{
-            $username= $user->getUsername();
-        }
-
         //$this->denyAccessUnlessGranted('ROLE_ADMIN', null, "Buraya erisim hakkiniz bulunmamaktadir");
         /*$blogRepository = $this->getDoctrine()->getRepository(blog::class);
         $blog = $blogRepository->findById(100);*/
@@ -70,7 +70,7 @@ class BlogController extends AbstractController
 
 
         return $this->render('Blog/Storefront/homePage.html.twig', [
-                'username' => $username,
+                'username' => $this->username,
                 'blog' => $contents,
             ]
 
@@ -80,8 +80,10 @@ class BlogController extends AbstractController
     /**
      * @BaseRoute("/blogcontent", name="bContent")
      */
-    public function showContent(EntityManagerInterface $entityManager, Request $request)
+    public function showContent(EntityManagerInterface $entityManager, Request $request )
     {
+
+
         $this->entityManager = $entityManager;
 
         $repository = $this->getDoctrine()->getRepository(Blog::class);
@@ -169,6 +171,7 @@ class BlogController extends AbstractController
         $blogRepository = $this->getDoctrine()->getRepository(blog::class);
         $blog = $blogRepository->findAll();
         return $this->render('Blog/Storefront/showBlog.html.twig', [
+                'username' => $this->username,
                 'blog' => $contents,
                 'toplam_sayfa'=> $totalPageNumber,
                 'current_page' => $page,
@@ -179,9 +182,8 @@ class BlogController extends AbstractController
     /**
      * @BaseRoute("/blogcontent/{id}", name= "single_entry_show")
      */
-    public function singeleEntryShow($id)
+    public function singeleEntryShow($id, GetUser $ServiceUsername)
     {
-
         $content = $this->getDoctrine()
             ->getRepository(Blog::class)
             ->find($id);
@@ -192,7 +194,7 @@ class BlogController extends AbstractController
             );
         }
         return $this->render('Blog/Storefront/singleBlogContent.html.twig', [
-
+                'username' => $this->username,
                 'blog' => $content,
             ]
 

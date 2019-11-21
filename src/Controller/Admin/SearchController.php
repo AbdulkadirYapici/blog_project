@@ -6,6 +6,7 @@ use App\Entity\Blog;
 use App\Entity\Category;
 use App\Entity\User;
 use App\Repository\BlogRepository;
+use App\Service\GetUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,12 @@ use Symfony\Component\Routing\Annotation\Route as BaseRoute;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SearchController extends AbstractController {
+    private $username= "";
+
+    public function __construct(GetUser $ServiceUsername )
+    {
+        $this->username = $ServiceUsername->getCurrentName();
+    }
     private $entityManager;
     /**
      * @BaseRoute("/result", name="search_page")
@@ -57,12 +64,16 @@ class SearchController extends AbstractController {
 
 
                 return $this->render('search/search.html.twig',[
+                    'username' => $this->username,
+
                     "category" => $blogArr,
                 ]);
 
             }
             else{
                 return $this->render('search/search.html.twig',[
+                    'username' => $this->username,
+
                     "error" => $error,
                 ]);
             }
@@ -70,6 +81,8 @@ class SearchController extends AbstractController {
         }
         else{
             return $this->render('search/search.html.twig',[
+                'username' => $this->username,
+
                 "blogs" => $blogs,
             ]);
         }

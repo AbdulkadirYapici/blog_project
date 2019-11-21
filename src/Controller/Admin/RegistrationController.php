@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Form\UserType;
 use App\Entity\User;
+use App\Service\GetUser;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class RegistrationController extends Controller
 {
+    private $username= "";
+
+    public function __construct(GetUser $ServiceUsername )
+    {
+        $this->username = $ServiceUsername->getCurrentName();
+    }
     /**
      * @Route("/register", name="user_registration")
      */
@@ -82,6 +89,7 @@ class RegistrationController extends Controller
 
         return $this->render(
             'registration/register.html.twig',[
+            'username' => $this->username,
 
             'form' => $form->createView(),
             'error' => $error

@@ -5,6 +5,7 @@ use App\Entity\Blog;
 use App\Entity\Category;
 use App\Entity\Tag;
 use App\Form\BlogType;
+use App\Service\GetUser;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Type;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -19,19 +20,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route as BaseRoute;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Security;
 
 class CrudController extends AbstractController {
-public $error= "";
+    const TOKEN_INVALID = "Token yanlış";
+    public $error= "";
 public $entityManager;
 public $definedCat= "";
 public $definedTag= "";
 
     const CPP = "cpp";
+    private $username= "";
 
+    public function __construct(GetUser $ServiceUsername )
+    {
+        $this->username = $ServiceUsername->getCurrentName();
+    }
     /**
      * @BaseRoute("/crud", name="crud_page")
      */
@@ -130,6 +138,8 @@ public $definedTag= "";
         $blogRepository = $this->getDoctrine()-> getRepository(blog::class);
         $blog= $blogRepository->findAll();
         return $this->render('Blog/Crud/crud.html.twig', [
+                'username' => $this->username,
+
                 'blog'=> $contents,
                 'toplam_sayfa'=> $totalPageNumber,
                 'current_page' => $page,
@@ -245,6 +255,8 @@ public $definedTag= "";
 
 
         return $this->render('Blog/Crud/crud.html.twig', [
+                'username' => $this->username,
+
                 'blog'=> $contents,
                 'toplam_sayfa'=> $totalPageNumber,
                 'current_page' => $page,
@@ -389,6 +401,7 @@ public $definedTag= "";
                 // ... do any other work - like sending them an email, etc
                 // maybe set a "flash" success message for the user
                 if(empty($this->error)){
+
                     $entityManager->persist($blogClass);
                     $entityManager->flush();
                     return $this->redirectToRoute('crud_page');
@@ -396,6 +409,8 @@ public $definedTag= "";
                 else{
 
                     return $this->render('Blog/Crud/new.html.twig', [
+                        'username' => $this->username,
+
                         'categories' => $allCategoriesArr,
                         'tags'=>$allTagsArr,
                         'form' => $form->createView(),
@@ -409,6 +424,8 @@ public $definedTag= "";
         }
 
         return $this->render('Blog/Crud/new.html.twig', [
+            'username' => $this->username,
+
             'categories' => $allCategoriesArr,
             'tags'=>$allTagsArr,
             'form' => $form->createView(),
@@ -447,7 +464,7 @@ public $definedTag= "";
         $allCategories= $allCategoriesRepository->findAll();
         foreach ($allCategories as $category){
             $allCategoriesArr[$category->getName()]= $category->getName();
-    }
+        }
 
         $allTagsRepository = $this->getDoctrine()-> getRepository(Tag::class);
         $allTagsArr = [];
@@ -565,7 +582,7 @@ public $definedTag= "";
 
                 /** @var Tag $tag */
 
-                $tag = $tagrepo->findByName($file = $form->get('tag2')->getData());
+                $tag = $tagrepo->findByName($form->get('tag2')->getData());
 
                 if($tag != NULL) {
                     $blogClass->addTagId($tag[0]);
@@ -614,6 +631,8 @@ public $definedTag= "";
                 else{
 
                     return $this->render('Blog/Crud/edit.html.twig', [
+                        'username' => $this->username,
+
                         'categories' => $allCategoriesArr,
                         'tags'=>$allTagsArr,
                         'definedCat'=> $this->definedCat,
@@ -626,13 +645,14 @@ public $definedTag= "";
 
 
             }else{
-                var_dump("Token yanlış! ");exit();
-
+                throw new BadRequestHttpException(self::TOKEN_INVALID);
             }
 
         }
 
         return $this->render('Blog/Crud/edit.html.twig', [
+            'username' => $this->username,
+
             'categories' => $allCategoriesArr,
             'tags'=>$allTagsArr,
             'definedCat'=> $this->definedCat,
