@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -304,8 +305,12 @@ public $definedTag= "";
                 'mapped' => false ,
 
             ))
-            ->add('content', TextType::class)
-            ->add('summary', TextType::class)
+            ->add('content', TextareaType::class,array(
+                'attr' => ['class' => 'tinymce'],
+            ))
+            ->add('summary', TextareaType::class, array(
+                'attr' => ['class' => 'tinymce'],
+            ))
             ->add('createdAt', DateType::class, array(
                 'data' => new \DateTime(),
                 'widget' => 'single_text',
@@ -490,8 +495,12 @@ public $definedTag= "";
                 'required' => false,
                 'mapped' => false ,
             ))
-            ->add('content', TextType::class)
-            ->add('summary', TextType::class)
+            ->add('content', TextareaType::class, array(
+                'attr' => ['class' => 'tinymce'],
+            ))
+            ->add('summary', TextareaType::class, array(
+                'attr' => ['class' => 'tinymce'],
+            ))
             ->add('createdAt', DateType::class, array(
                 'data' => new \DateTime(),
                 'widget' => 'single_text',

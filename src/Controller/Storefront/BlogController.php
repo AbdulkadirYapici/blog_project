@@ -4,7 +4,10 @@ namespace App\Controller\Storefront;
 
 
 use App\Entity\Blog;
+use App\Entity\Category;
+use App\Repository\BlogRepository;
 use App\Service\GetUser;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\Type\BlogType;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Security;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 class BlogController extends AbstractController
 {
@@ -52,6 +56,54 @@ class BlogController extends AbstractController
      */
     public function indexAction(EntityManagerInterface $entityManager, Security $security)
     {
+        $config = new \Doctrine\DBAL\Configuration();
+
+        $connectionParams = array(
+            'dbname' => 'blog_project',
+            'user' => 'root',
+            'password' => 'kadir',
+            'host' => '127.0.0.1:3306',
+            'driver' => 'pdo_mysql',
+        );
+        $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+
+        /*$qb = $conn->createQueryBuilder();
+        $qb
+            ->select('*')
+            ->from('blog_category')
+            ->where('1=1')
+            ->where('u.id = :identifier')
+            ->orderBy('u.name', 'ASC')
+            ->setParameter('identifier', 100);
+        ;
+        $query = $qb->execute();
+        $blog_categoryCount= $query->rowCount();
+*/
+
+        $allCategoriesRepository = $this->getDoctrine()-> getRepository(Category::class);
+
+        $allCategories= $allCategoriesRepository->findAll();
+        $allCategoriesArr = [];
+
+        $repository = $this->getDoctrine()->getRepository(Category::class);
+
+        foreach ($allCategories as $cat){
+            dump("id'si : " . $cat->getId());
+            $qb = $conn->createQueryBuilder();
+            $qb
+                ->select('*')
+                ->from('blog_category', 'b')
+                ->where('b.category_id = :catid')
+                ->setParameter('catid', $cat->getId());
+            ;
+            $query = $qb->execute();
+
+            $allCategoriesArr[$cat->getName()] = $blog_categoryCount= $query->rowCount();
+            dump("sayisi : ". $blog_categoryCount);
+
+        }
+        dump($allCategoriesArr);
+
         //$this->denyAccessUnlessGranted('ROLE_ADMIN', null, "Buraya erisim hakkiniz bulunmamaktadir");
         /*$blogRepository = $this->getDoctrine()->getRepository(blog::class);
         $blog = $blogRepository->findById(100);*/
@@ -70,6 +122,7 @@ class BlogController extends AbstractController
 
 
         return $this->render('Blog/Storefront/homePage.html.twig', [
+                'categories'=>$allCategoriesArr,
                 'username' => $this->username,
                 'blog' => $contents,
             ]

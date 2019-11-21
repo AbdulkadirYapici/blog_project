@@ -108,13 +108,14 @@
 
 
                     <div class="md-form">
-                        <input type="text" id="form_content" name="form[content]" class="form-control" required="required" value="{{ blog[0].content }}">
+                        <textarea id="form_content" name="form[content]" required="required" class="col-12 form-control">{{ blog[0].content }}</textarea>
+
                         <label class="required" for="form_content">Content</label>
 
                     </div>
 
                     <div class="md-form">
-                        <input type="text" id="form_summary" name="form[summary]" class="form-control" required="required" value="{{ blog[0].summary }}">
+                        <textarea id="form_summary" name="form[summary]" required="required" class="col-12 form-control">{{ blog[0].summary }}</textarea>
                         <label class="required" for="form_summary">Summary</label>
 
                     </div>

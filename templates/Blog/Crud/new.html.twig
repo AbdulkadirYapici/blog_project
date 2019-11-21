@@ -6,6 +6,8 @@
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 {% endblock %}
 {% block body %}
+    {#
+
 <body style="background:#42c8f5; ">
 
 
@@ -44,6 +46,7 @@
 
 
 </body>
+    #}
     <body style="background:#42c8f5; ">
 
     <!-- Material form register -->
@@ -55,7 +58,7 @@
             <!--Card content-->
             <div class="card-body px-lg-5 pt-0">
                 <!-- Form -->
-                <form name="form" class="text-center" method="post" enctype="multipart/form-data">
+                <form name="form" class="text-center" method="post" enctype="multipart/form-data" id="newform">
                     <p class="h4 mb-4 ">Create New Entry</p>
 
                     {% if error %}
@@ -86,13 +89,14 @@
 
 
                     <div class="md-form">
-                        <input type="text" id="form_content" name="form[content]" class="form-control" required="required" >
+                        <textarea id="form_content" name="form[content]" required="required" class="col-12 form-control"></textarea>
+
                         <label class="required" for="form_content">Content</label>
 
                     </div>
 
                     <div class="md-form">
-                        <input type="text" id="form_summary" name="form[summary]" class="form-control" required="required" >
+                        <textarea id="form_summary" name="form[summary]" required="required" class="col-12 form-control"></textarea>
                         <label class="required" for="form_summary">Summary</label>
 
                     </div>
@@ -210,6 +214,11 @@
 
     {% block javascripts %}
         {{parent()}}
+        <script src='https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
+        <script>
+            tinymce.init({
+                selector: '#mytextarea'
+            });
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src= "{{asset('js/changeClass.js')}}"></script>
     {% endblock %}
