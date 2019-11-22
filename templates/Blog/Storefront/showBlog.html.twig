@@ -33,7 +33,7 @@
                                 <h1  align="center" > {{ blogdata.title }} </h1>
                                 <p align="center"><a href="{{ url('single_entry_show', {id: blogdata.id}) }} "><img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"></a></p>
 
-                                <p align="center" style="margin-right: 0px; ">                         <b>{{ blogdata.Summary }}</b><hr>
+                                <p align="center" style="margin-right: 0px; ">                         {{ blogdata.Summary | raw }}<hr>
                                 </p>
 
 

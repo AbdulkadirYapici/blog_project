@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -33,8 +34,8 @@ class BlogType extends AbstractType
                 'required' => false,
                 'mapped' => false ,
             ))
-            ->add('content', TextType::class)
-            ->add('summary', TextType::class)
+            ->add('content', TextareaType::class)
+            ->add('summary', TextareaType::class)
             ->add('createdAt', DateType::class, array(
                 'data' => new \DateTime(),
                 'widget' => 'single_text',

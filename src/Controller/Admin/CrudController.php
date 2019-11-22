@@ -297,20 +297,14 @@ public $definedTag= "";
 
         $form = $this->createFormBuilder($blogClass)
             ->add('title', TextType::class)
-
             ->add('slug', TextType::class)
             ->add('preview_img', FileType::class, array(
                 'data_class' => null,
                 'required' => false,
                 'mapped' => false ,
-
             ))
-            ->add('content', TextareaType::class,array(
-                'attr' => ['class' => 'tinymce'],
-            ))
-            ->add('summary', TextareaType::class, array(
-                'attr' => ['class' => 'tinymce'],
-            ))
+            ->add('content', TextareaType::class)
+            ->add('summary', TextareaType::class)
             ->add('createdAt', DateType::class, array(
                 'data' => new \DateTime(),
                 'widget' => 'single_text',

@@ -141,7 +141,7 @@
                                 {% endif %}
                             {% endfor %}
                         </select><br>
-
+                        </div>
                         <label class="" for="form_category2">Category</label>
 
                         <div class="md-form">
@@ -196,5 +196,15 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src= "{{asset('js/changeClass.js')}}"></script>
         <script src= "{{asset('js/toolbarClearer.js')}}"></script>
-
+        <script src='https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
+        <script>
+            tinymce.init({
+                selector: '#form_summary'
+            });
+        </script>
+        <script>
+            tinymce.init({
+                selector: '#form_content'
+            });
+        </script>
     {% endblock %}
