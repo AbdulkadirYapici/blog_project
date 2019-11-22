@@ -7,10 +7,10 @@
 
         {% endblock %}
 
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/3/w3.css">
         <link href="{{ asset('css/sideNav.css') }}" rel="stylesheet">
 
-        <link href="{{ asset('css/main.css') }}" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/3/w3.css">
+
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
 
@@ -22,19 +22,21 @@
 
 
     <!-- Navigation -->
+
     <nav class="w3-bar w3-black">
+
         {% if username is defined and username== "Ziyaretçi" %}
-            <p style="float: right; font-size: 14px"> <b >Hoşgeldin {{ username }}</b></p>
 
             <a href="/" class="w3-button w3-bar-item">Home</a>
             <a href="/blogcontent" class="w3-button w3-bar-item">Show Blog Contents</a>
             <a href="/register" class="w3-button w3-bar-item">Sing Up</a>
             <a href="/login" class="w3-button w3-bar-item">Sign In</a>
-            <a href="/logout" class="w3-button w3-bar-item">Sign Out</a>
-            <a href="/crud" class="w3-button w3-bar-item">Admin Panel</a>
-            <form action="/result" method="GET">
-                <input id="search" name="search" type="text" placeholder="Type here">
-                <input id="submit" type="submit" value="Search">
+
+            <form action="/result" method="GET" class="form">
+
+                <button id="submit" type="submit" value="Search" class="btn-outline-light" style="background: white; float: right">Search</button>
+                <input id="search" name="search" type="text" class="col-3"  placeholder="Type here" style="background: white; float: right">
+
             </form>
 
             <!--<p style="float: right;"><a href="/{{ path('app_logout') }}" > Çıkış Yap </a></p>-->
@@ -45,26 +47,32 @@
                 <a href="/blogcontent" class="w3-button w3-bar-item">Show Blog Contents</a>
                 <a href="/logout" class="w3-button w3-bar-item">Sign Out</a>
                 <a href="/crud" class="w3-button w3-bar-item">Admin Panel</a>
-                <form action="/result" method="GET">
-                    <input id="search" name="search" type="text" placeholder="Type here">
-                    <input id="submit" type="submit" value="Search">
-                </form>
+                <form action="/result" method="GET" class="form">
 
+                    <button id="submit" type="submit" value="Search" class="btn-outline-light" style="background: white; float: right">Search</button>
+                    <input id="search" name="search" type="text" class="col-3"  placeholder="Type here" style="background: white; float: right">
+
+                </form>
             {% else %}
                 <p style="float: right; font-size: 16px"> <b >Hoşgeldin {{ username }}</b></p>
 
                 <a href="/" class="w3-button w3-bar-item">Home</a>
                 <a href="/blogcontent" class="w3-button w3-bar-item">Show Blog Contents</a>
                 <a href="/logout" class="w3-button w3-bar-item">Sign Out</a>
-                <form action="/result" method="GET">
-                    <input id="search" name="search" type="text" placeholder="Type here">
-                    <input id="submit" type="submit" value="Search">
+                <div class="col-xs-3">
+                    <form action="/result" method="GET" class="form">
 
-                </form>
+                        <button id="submit" type="submit" value="Search" class="btn-outline-light" style="background: white; float: right">Search</button>
+                        <input id="search" name="search" type="text" class="col-3"  placeholder="Type here" style="background: white; float: right">
+
+                    </form>
+                </div>
+
         {% endif %}
 
 
     </nav>
+    <p style="margin: 0 auto; font-size: 16px ; color: white;"> <b >Hoşgeldin {{ username }}</b></p>
 
     </body>
     {% block body %}

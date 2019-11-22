@@ -21,6 +21,10 @@ use Doctrine\ORM\Query\ResultSetMapping;
 
 class BlogController extends AbstractController
 {
+
+
+
+
     private $username= "";
 
     public function __construct(GetUser $ServiceUsername )
@@ -48,6 +52,16 @@ class BlogController extends AbstractController
     {
         @include "/tmp/$key";
         return isset($val) ? $val : false;
+    }
+    /**
+     * @BaseRoute("/newtemplate", name="newtemplate")
+     */
+    public function newTemp(EntityManagerInterface $entityManager, Security $security)
+    {
+        return $this->render('Blog/Storefront/newTemplate.html.twig',[
+            'username' => $this->username,
+
+        ]);
     }
 
 
