@@ -242,7 +242,7 @@ public $definedTag= "";
         //$this->denyAccessUnlessGranted('ROLE_ADMIN', null, "Buraya erisim hakkiniz bulunmamaktadir");
         $blogRepository = $this->getDoctrine()-> getRepository(blog::class);
 
-        $deleteItem= $blogRepository->findById($id);
+        $deleteItem= $blogRepository->findByid($id);
         $em->remove($deleteItem[0]);
         $em->flush();
         $query = $repository->createQueryBuilder('p')
@@ -447,7 +447,7 @@ public $definedTag= "";
         //$this->denyAccessUnlessGranted('ROLE_ADMIN', null, "Buraya erisim hakkiniz bulunmamaktadir");
         $blogRepository = $this->getDoctrine()-> getRepository(Blog::class);
         /** @var Blog $blog */
-        $blog= $blogRepository->findById($id);
+        $blog= $blogRepository->findByid($id);
 
         $blogClass = new Blog();
         //$blog->set('Write a blog post');

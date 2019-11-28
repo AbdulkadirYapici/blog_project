@@ -32,7 +32,7 @@
                     <div class='homePageDiv'>
                         {% if blogdata.status == 1%}
 
-                            <a href="{{ url('single_entry_show', {id: blogdata.id}) }} "> <img  class="mySlides" src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}"  style="width:100%;height:500px;"></a>
+                            <a href="{{ url('single_entry_show', {id: blogdata.getId}) }} "> <img  class="mySlides" src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}"  style="width:100%;height:500px;"></a>
                         {% endif %}
                     </div>
                 {% endfor %}
@@ -46,7 +46,7 @@
                     {% for blogdata in blog %}
                         {% if blogdata.status == 1%}
 
-                            {{ blogdata.summary }}  <a href="{{ url('single_entry_show', {id: blogdata.id}) }} ">Yazıya git</a> <hr>
+                            {{ blogdata.summary }}  <a href="{{ url('single_entry_show', {id: blogdata.getId}) }} ">Yazıya git</a> <hr>
                         {% endif %}
 
                     {% endfor %}
@@ -70,7 +70,7 @@
             {% for blogdata in blog %}
                 {% if blogdata.status == 1%}
 
-                    <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"> {{ blogdata.summary }}  <a href="{{ url('single_entry_show', {id: blogdata.id}) }} ">Yazıya git</a> <hr>
+                    <img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"> {{ blogdata.summary }}  <a href="{{ url('single_entry_show', {id: blogdata.getId}) }} ">Yazıya git</a> <hr>
                 {% endif %}
 
             {% endfor %}

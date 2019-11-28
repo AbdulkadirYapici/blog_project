@@ -42,12 +42,12 @@
             <tbody>
             {% for blogdata in blog %}
                 <tr>
-                    <td>{{ blogdata.id }}</td>
+                    <td>{{ blogdata.getId }}</td>
                     <td>{{ blogdata.title }}</td>
                     <td><img src="{{ asset('uploads/afisler/' ~ blogdata.preview_img) }}" style="width:200px;height:121px;"></td>
                     <td>{{ dump(blogdata.status) }}</td>
-                    <td><button onclick="sure({{blogdata.id}})" type="button" class="btn btn-danger">Delete This Blog</button> </td>
-                    <td><a href="{{ url('edit_blog_page', {id: blogdata.id}) }} "> <button type="button" class="btn btn-warning">Edit This Blog</button> </a></td>
+                    <td><button onclick="sure({{blogdata.getId}})" type="button" class="btn btn-danger">Delete This Blog</button> </td>
+                    <td><a href="{{ url('edit_blog_page', {id: blogdata.getId}) }} "> <button type="button" class="btn btn-warning">Edit This Blog</button> </a></td>
 
                 </tr>
             {% endfor %}

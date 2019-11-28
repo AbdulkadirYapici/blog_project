@@ -27,6 +27,7 @@ class BlogType extends AbstractType
 
 
         $builder
+            ->add('id', IntegerType::class)
             ->add('title', TextType::class)
             ->add('slug', TextType::class)
             ->add('preview_img', FileType::class, array(

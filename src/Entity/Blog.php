@@ -279,10 +279,6 @@ class Blog
     }
 
 
-    public function __toString()
-    {
-        return sprintf('%s %d',$this->getPreviewImg(),  $this->id);
-    }
 
 
 }
